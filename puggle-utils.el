@@ -21,4 +21,14 @@
     (mark-whole-buffer)
     (shell-command-on-region (mark) (point) "xmllint --format -" (current-buffer) t)))
 
+(defun puggle-eval-and-replace (value)
+  "Evaluate the sexp at point and replace it with its value"
+  (interactive (list (eval-last-sexp nil)))
+  (kill-sexp -1)
+  (insert (format "%S" value)))
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-w") 'puggle-eval-and-replace)))
+
 (provide 'puggle-utils)
