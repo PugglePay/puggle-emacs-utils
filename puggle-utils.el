@@ -25,7 +25,18 @@
   "Evaluate the sexp at point and replace it with its value"
   (interactive (list (eval-last-sexp nil)))
   (kill-sexp -1)
-  (insert (format "%S" value)))
+  (insert (formatda "%S" value)))
+
+(defun puggle-frequencies (coll &optional res)
+  "Returns a plist of the occurencies count of the item in the list"
+  (if (not coll)
+    res
+    (puggle-frequencies
+     (cdr coll)
+     (plist-put
+      res
+      (car coll)
+      (1+ (or (plist-get res (car coll)) 0))))))
 
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
