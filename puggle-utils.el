@@ -38,6 +38,10 @@
       (car coll)
       (1+ (or (plist-get res (car coll)) 0))))))
 
+(defun puggle-indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-w") 'puggle-eval-and-replace)))
