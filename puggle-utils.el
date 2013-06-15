@@ -52,6 +52,25 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
+(defvar puggle-projects ())
+
+(defun puggle-files-in-project (project-name)
+  (interactive
+   (list (completing-read
+	  "project: "
+	  (--map (plist-get it :name) puggle-projects))))
+
+  (let* ((project (--first (equal project-name
+				  (plist-get it :name))
+			   puggle-projects)))
+    
+    (assert (listp project) t
+	    (format "no project with name %s found"
+		    project-name))
+ 
+    (cd (plist-get project :path))
+    (find-file-in-project)))
+
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-w") 'puggle-eval-and-replace)))
