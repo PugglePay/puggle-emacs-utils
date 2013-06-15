@@ -38,6 +38,16 @@
       (car coll)
       (1+ (or (plist-get res (car coll)) 0))))))
 
+(defun puggle-compile-keybinding (item)
+  `(global-set-key (kbd ,(car item))
+		   (lambda ()
+		     (interactive)
+		     ,(car (cdr item)))))
+
+(defmacro puggle-define-keys (&rest body)
+  (let ((items (-partition 2 body)))
+    `(progn .,(-map 'puggle-compile-keybinding items))))
+
 (defun puggle-indent-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
